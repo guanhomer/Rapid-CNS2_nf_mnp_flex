@@ -12,8 +12,8 @@ A directory containing basecalled and aligned (hg38) BAM files, with either 5mC,
 
 ### Output
 
-1. A MNPFlex.subset.bed file, formatted and ready for input into the MNP-Flex classifier.
-2. A MNPFlex.subset.pdf file, MNP-Flex report.
+1. MNPFlex.subset.bed file, formatted and ready for input into the MNP-Flex classifier.
+2. MNPFlex.subset.pdf file, MNP-Flex report.
 
 <div align="left">
 <h1 style="display: inline-block;">Rapid-CNS<sup>2</sup> workflow</h1>
