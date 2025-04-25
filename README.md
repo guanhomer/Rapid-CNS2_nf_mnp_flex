@@ -1,6 +1,6 @@
 ## Fork overview
 
-The `main.sh` merges BAM files, calls modifications with modkit, and prepares the input for MNP-Flex.
+The `main.sh` merges BAM files, calls modifications with modkit, prepares the input for MNP-Flex, and generates report via MNP-Flex API.
 
 This fork is designed to generate input files for the MNP-Flex classifier based on the rapid-CNS2 Nextflow pipeline. It has been adapted specifically for Nanopore sequencing data that includes 5hmC and 5mC modifications (5mC_5hmC or 5mCG_5hmCG), whereas the original pipeline was designed primarily for 5mC-only data (5mC or 5mGC). 
 
