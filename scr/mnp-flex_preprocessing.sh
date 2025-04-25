@@ -3,12 +3,13 @@
 IN_FILE=$1
 MNP_BED=$2
 OUT_PATH=$3
+filename=$4 # id as filename
 
 # Extract filename from path
-file=$(basename "$IN_FILE")
+# file=$(basename "$IN_FILE")
 
 # Extract part before the first dot in the filename
-filename=$(echo "$file" | cut -d '.' -f 1)
+# filename=$(echo "$file" | cut -d '.' -f 1)
 # mkdir -p ${OUT_PATH}/${filename}/
 
 # Original methylation rate = N_mod / N_valid-cov

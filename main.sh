@@ -9,6 +9,7 @@ id="sample_name"
 modkit_threads=8
 mnpflex_script="/path/to/Rapid-CNS2_nf/scr/mnp-flex_preprocessing.sh"
 mnpflex_bed="/path/to/Rapid-CNS2_nf/data/MNP-flex.bed"
+mnpflex_report_script="/path/to/Rapid-CNS2_nf/scr/mnp-flex_get_report.sh"
 
 # Output paths
 merged_bam="/path/to/output/results/merged/${id}.merged.bam"
@@ -48,5 +49,14 @@ echo "Starting MNPFlex preprocessing..."
 bash "$mnpflex_script" \
     "$mods_out/${id}.mods.bedmethyl" \
     "$mnpflex_bed" \
-    "$mnpflex_out"
+    "$mnpflex_out" \
+    "${id}"
 echo "Finished MNPFlex preprocessing."
+
+# Upload to MNPFlex platform and get report
+mkdir -p "$mnpflex_out"
+echo "Uploading bed file and generating MNPFlex report..."
+bash "$mnpflex_report_script" \
+    "${mnpflex_out}/${id}.MNPFlex.subset.bed" \
+    "${mnpflex_out}/${id}.MNPFlex.subset.pdf"
+echo "Finished generating MNPFlex report."
