@@ -1,6 +1,10 @@
-<div align="left">
-<img width="342" alt="313507599-6ba243da-0dca-4f4e-9cea-a4df7b989ff6" src="https://github.com/user-attachments/assets/cda166c2-664f-4286-951a-309b111c1132">
+## Fork overview
 
+This fork is designed to generate input files for the MNP-Flex classifier based on the rapid-CNS2 Nextflow pipeline. It has been adapted specifically for Nanopore sequencing data that includes 5hmC and 5mC modifications (5mC_5hmC or 5mCG_5hmCG), whereas the original pipeline was tailored primarily for 5mC-only data.
+
+MNP-Flex (https://mnp-flex.org) is a platform-independent methylation classification system, including an MGMT promoter methylation prediction model, designed for sequencing-based methylation data. It utilizes the latest CNS tumor methylation classification model from molecularneuropathology.org.
+
+<div align="left">
 <h1 style="display: inline-block;">Rapid-CNS<sup>2</sup> workflow</h1>
 </div>
 
