@@ -1,8 +1,18 @@
 ## Fork overview
 
-This fork is designed to generate input files for the MNP-Flex classifier based on the rapid-CNS2 Nextflow pipeline. It has been adapted specifically for Nanopore sequencing data that includes 5hmC and 5mC modifications (5mC_5hmC or 5mCG_5hmCG), whereas the original pipeline was tailored primarily for 5mC-only data.
+The `main.sh` merges BAM files, calls modifications with modkit, and prepares the input for MNP-Flex.
+
+This fork is designed to generate input files for the MNP-Flex classifier based on the rapid-CNS2 Nextflow pipeline. It has been adapted specifically for Nanopore sequencing data that includes 5hmC and 5mC modifications (5mC_5hmC or 5mCG_5hmCG), whereas the original pipeline was tailored primarily for 5mC-only data. 
 
 MNP-Flex (https://mnp-flex.org) is a platform-independent methylation classification system, including an MGMT promoter methylation prediction model, designed for sequencing-based methylation data. It utilizes the latest CNS tumor methylation classification model from molecularneuropathology.org.
+
+### Input
+
+A directory containing basecalled and aligned BAM files, with 5mC and 5hmC (or 5mGC and 5hmGC) modifications.
+
+### Output
+
+A MNPFlex.subset.bed file, formatted and ready for input into the MNP-Flex classifier.
 
 <div align="left">
 <h1 style="display: inline-block;">Rapid-CNS<sup>2</sup> workflow</h1>

@@ -9,9 +9,19 @@ file=$(basename "$IN_FILE")
 
 # Extract part before the first dot in the filename
 filename=$(echo "$file" | cut -d '.' -f 1)
-mkdir -p ${OUT_PATH}/${filename}/
+# mkdir -p ${OUT_PATH}/${filename}/
 
-awk '{print $1,$2,$3,$10,$11}' ${IN_FILE} > ${OUT_PATH}/${filename}.tmp.bed
+# Original methylation rate = N_mod / N_valid-cov
+# awk '{print $1,$2,$3,$10,$11}' ${IN_FILE} > ${OUT_PATH}/${filename}.tmp.bed
+
+# Filter for h (5hmC) rows from bedMethyl file to prevent duplicated rows
+# Update methylation rate = ( N_mod + N_other-mod ) / N_valid-cov
+awk -v FS="\t" -v OFS="\t" '
+    $4 == "h" && $10 != 0 {
+        score = ($12 + $14) / $10 * 100
+        printf "%s\t%s\t%s\t%s\t%.2f\n", $1, $2, $3, $10, score
+    }
+' "$IN_FILE" > "${OUT_PATH}/${filename}.tmp.bed"
 
 perl -p -i -e 's/ /\t/g' ${OUT_PATH}/${filename}.tmp.bed
 
