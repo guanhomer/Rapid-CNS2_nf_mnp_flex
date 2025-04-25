@@ -8,7 +8,7 @@ MNP-Flex (https://mnp-flex.org) is a platform-independent methylation classifica
 
 ### Input
 
-A directory containing basecalled and aligned (hg38) BAM files, with either 5mC, 5hmC_5hmC, 5mGC, and 5hmGC_5hmGC modifications.
+A directory containing basecalled and aligned (hg38) BAM files, with either 5mC, 5mC_5hmC, 5mGC, and 5mGC_5hmGC modifications.
 
 ### Output
 
