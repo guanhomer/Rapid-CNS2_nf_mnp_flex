@@ -23,7 +23,7 @@ awk -v FS="\t" -v OFS="\t" '
     }
 ' "$IN_FILE" > "${OUT_PATH}/${filename}.tmp.bed"
 
-perl -p -i -e 's/ /\t/g' ${OUT_PATH}/${filename}.tmp.bed
+# perl -p -i -e 's/ /\t/g' ${OUT_PATH}/${filename}.tmp.bed
 
 bedtools intersect  -a ${OUT_PATH}/${filename}.tmp.bed  -b ${MNP_BED}  -wa -wb > ${OUT_PATH}/${filename}.MNPFlex.bed
 
