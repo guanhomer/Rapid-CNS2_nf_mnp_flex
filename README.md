@@ -1,4 +1,4 @@
-## Fork overview
+## Generate MNP-Flex classifier report via API
 
 The `main.sh` merges BAM files, calls modifications with modkit, prepares the input for MNP-Flex, and generates report via MNP-Flex API.
 
@@ -8,7 +8,7 @@ MNP-Flex (https://mnp-flex.org) is a platform-independent methylation classifica
 
 ### Input
 
-A directory containing basecalled and aligned BAM files, with 5mC and 5hmC (or 5mGC and 5hmGC) modifications.
+A directory containing basecalled and aligned (hg38) BAM files, with either 5mC, 5hmC_5hmC, 5mGC, and 5hmGC_5hmGC modifications.
 
 ### Output
 
