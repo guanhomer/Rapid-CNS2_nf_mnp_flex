@@ -21,7 +21,7 @@ echo -e "$column_names" > "${OUT_PATH}/${FILENAME}.MNPFlex.subset.bed"
 
 # Group by IlmnID (column $25) and summarize (sum) columns N_valid-cov ($10), N_mod ($12), and N_other-mod ($14)
 # Methylation rate = ( N_mod + N_other-mod ) / N_valid-cov
-awk -v FS="\t" -v OFS=" " '{
+awk -v FS=" " -v OFS=" " '{
     coverage[$25] += $10; 
     modC[$25] += $12 + $14; 
     chr[$25] = $19; 
