@@ -10,18 +10,21 @@ FILENAME=$4  # id as filename
 mkdir -p "$OUT_PATH"
 
 # Filter for m (5mC) rows from bedMethyl file to prevent duplicated rows
-awk '$4 == "m"' "$IN_FILE" > "${OUT_PATH}/${FILENAME}.tmp.bed"
+awk '$4 == "m"' "$IN_FILE" > "${OUT_PATH}/${FILENAME}.tmp1.bed"
 
 # Intersect with the reference file for IlmnID using bedtools
-bedtools intersect -a "${OUT_PATH}/${FILENAME}.tmp.bed" -b "$MNP_BED" -wa -wb > "${OUT_PATH}/${FILENAME}.tmp.bed"
+bedtools intersect -a "${OUT_PATH}/${FILENAME}.tmp.bed" -b "$MNP_BED" -wa -wb > "${OUT_PATH}/${FILENAME}.tmp2.bed"
 
 # Add column names to the output file
 column_names="chr start end coverage modC_percent IlmnID"
 echo -e "$column_names" > "${OUT_PATH}/${FILENAME}.MNPFlex.subset.bed"
 
+# Sleep 5 seconds to ensure the file is written before appending
+sleep 5
+
 # Group by IlmnID (column $25) and summarize (sum) columns N_valid-cov ($10), N_mod ($12), and N_other-mod ($14)
 # Methylation rate = ( N_mod + N_other-mod ) / N_valid-cov
-awk -v FS=" " -v OFS=" " '{
+awk -v FS="\t" -v OFS=" " '{
     coverage[$25] += $10; 
     modC[$25] += $12 + $14; 
     chr[$25] = $19; 
@@ -36,4 +39,5 @@ END {
     }
 }' "${OUT_PATH}/${FILENAME}.tmp.bed" >> "${OUT_PATH}/${FILENAME}.MNPFlex.subset.bed"
 
-rm -r ${OUT_PATH}/${filename}.tmp.bed
+rm -r ${OUT_PATH}/${filename}.tmp1.bed
+rm -r ${OUT_PATH}/${filename}.tmp2.bed
