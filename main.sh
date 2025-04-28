@@ -10,6 +10,7 @@ modkit_threads=8
 mnpflex_script="/path/to/Rapid-CNS2_nf/scr/mnp-flex_preprocessing.sh"
 mnpflex_bed="/path/to/Rapid-CNS2_nf/data/MNP-flex.bed"
 mnpflex_report_script="/path/to/Rapid-CNS2_nf/scr/mnp-flex_get_report.sh"
+extract_score_script="/path/to/Rapid-CNS2_nf/scr/extract_report_score.R"
 
 # Output paths
 merged_bam="/path/to/output/results/merged/${id}.merged.bam"
@@ -60,3 +61,10 @@ bash "$mnpflex_report_script" \
     "${mnpflex_out}/${id}.MNPFlex.subset.bed" \
     "${mnpflex_out}/${id}.MNPFlex.subset.pdf"
 echo "Finished generating MNPFlex report."
+
+# Extract classification scores and MGMT status from the pdf report
+echo "Extracting scores from the MNPFlex report..."
+Rscript "$extract_score_script" "${mnpflex_out}/${id}.MNPFlex.subset.pdf"
+echo "Finished extracting scores from the report."
+
+
