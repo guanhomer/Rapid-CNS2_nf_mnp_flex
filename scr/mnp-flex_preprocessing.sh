@@ -16,7 +16,7 @@ awk '$4 == "m"' "$IN_FILE" > "${OUT_PATH}/${FILENAME}.tmp1.bed"
 bedtools intersect -a "${OUT_PATH}/${FILENAME}.tmp.bed" -b "$MNP_BED" -wa -wb > "${OUT_PATH}/${FILENAME}.tmp2.bed"
 
 # Add column names to the output file
-column_names="chr start end coverage modC_percent IlmnID"
+column_names="chr start end coverage methylation_percentage IlmnID"
 echo -e "$column_names" > "${OUT_PATH}/${FILENAME}.MNPFlex.subset.bed"
 
 # Sleep 5 seconds to ensure the file is written before appending
