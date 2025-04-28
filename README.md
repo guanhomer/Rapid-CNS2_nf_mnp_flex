@@ -16,6 +16,7 @@ MNP-Flex (https://mnp-flex.org) is a platform-independent methylation classifica
 
 1. MNPFlex.subset.bed file, formatted as input of the MNP-Flex classifier.
 2. MNPFlex.subset.pdf file, MNP-Flex report.
+3. MNPFlex.subset.txt file, extracted classification scores and MGMT status.
 
 ## Overview from Rapid-CNS<sup>2</sup> 
 
