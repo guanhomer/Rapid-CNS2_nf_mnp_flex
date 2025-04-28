@@ -4,7 +4,7 @@ library(stringr)
 args <- commandArgs(trailingOnly = TRUE)
 
 if (length(args) == 0) {
-  stop("No input file provided. Usage: Rscript script.R <report_file.pdf>")
+  stop("No input file provided. Usage: Rscript extract_report_score.R <report_file.pdf>")
 }
 
 report_file <- args[1]
