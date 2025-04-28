@@ -4,20 +4,20 @@
 IN_FILE=$1
 MNP_BED=$2
 OUT_PATH=$3
-FILENAME=$4  # id as filename
+ID=$4  # ID as output filename
 
 # Ensure output path exists
 mkdir -p "$OUT_PATH"
 
 # Filter for m (5mC) rows from bedMethyl file to prevent duplicated rows
-awk '$4 == "m"' "$IN_FILE" > "${OUT_PATH}/${FILENAME}.tmp1.bed"
+awk '$4 == "m"' "$IN_FILE" > "${OUT_PATH}/${ID}.tmp1.bed"
 
 # Intersect with the reference file for IlmnID using bedtools
-bedtools intersect -a "${OUT_PATH}/${FILENAME}.tmp.bed" -b "$MNP_BED" -wa -wb > "${OUT_PATH}/${FILENAME}.tmp2.bed"
+bedtools intersect -a "${OUT_PATH}/${ID}.tmp.bed" -b "$MNP_BED" -wa -wb > "${OUT_PATH}/${ID}.tmp2.bed"
 
 # Add column names to the output file
 column_names="chr start end coverage methylation_percentage IlmnID"
-echo -e "$column_names" > "${OUT_PATH}/${FILENAME}.MNPFlex.subset.bed"
+echo -e "$column_names" > "${OUT_PATH}/${ID}.MNPFlex.subset.bed"
 
 # Sleep 5 seconds to ensure the file is written before appending
 sleep 5
@@ -37,7 +37,7 @@ END {
         # Print the result with space delimiters and 2 decimal places for the score
         printf "%s %s %s %d %.2f %s\n", chr[id], start[id], end[id], coverage[id], score, id
     }
-}' "${OUT_PATH}/${FILENAME}.tmp.bed" >> "${OUT_PATH}/${FILENAME}.MNPFlex.subset.bed"
+}' "${OUT_PATH}/${ID}.tmp.bed" >> "${OUT_PATH}/${ID}.MNPFlex.subset.bed"
 
-rm -r ${OUT_PATH}/${FILENAME}.tmp1.bed
-rm -r ${OUT_PATH}/${FILENAME}.tmp2.bed
+rm -r ${OUT_PATH}/${ID}.tmp1.bed
+rm -r ${OUT_PATH}/${ID}.tmp2.bed
