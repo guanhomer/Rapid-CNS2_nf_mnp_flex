@@ -39,5 +39,5 @@ END {
     }
 }' "${OUT_PATH}/${FILENAME}.tmp.bed" >> "${OUT_PATH}/${FILENAME}.MNPFlex.subset.bed"
 
-rm -r ${OUT_PATH}/${filename}.tmp1.bed
-rm -r ${OUT_PATH}/${filename}.tmp2.bed
+rm -r ${OUT_PATH}/${FILENAME}.tmp1.bed
+rm -r ${OUT_PATH}/${FILENAME}.tmp2.bed
