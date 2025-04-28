@@ -1,40 +1,38 @@
 #!/bin/bash
 
+# Input arguments
 IN_FILE=$1
 MNP_BED=$2
 OUT_PATH=$3
-filename=$4 # id as filename
+FILENAME=$4  # id as filename
 
-# Extract filename from path
-# file=$(basename "$IN_FILE")
-
-# Extract part before the first dot in the filename
-# filename=$(echo "$file" | cut -d '.' -f 1)
-# mkdir -p ${OUT_PATH}/${filename}/
-
-# Original methylation rate = N_mod / N_valid-cov
-# awk '{print $1,$2,$3,$10,$11}' ${IN_FILE} > ${OUT_PATH}/${filename}.tmp.bed
+# Ensure output path exists
+mkdir -p "$OUT_PATH"
 
 # Filter for m (5mC) rows from bedMethyl file to prevent duplicated rows
-# Update methylation rate = ( N_mod + N_other-mod ) / N_valid-cov
-awk -v FS="\t" -v OFS="\t" '
-    $4 == "m" && $10 != 0 {
-        score = ($12 + $14) / $10 * 100
-        printf "%s\t%s\t%s\t%s\t%.2f\n", $1, $2, $3, $10, score
-    }
-' "$IN_FILE" > "${OUT_PATH}/${filename}.tmp.bed"
+awk '$4 == "m"' "$IN_FILE" > "${OUT_PATH}/${FILENAME}.tmp.bed"
 
-# perl -p -i -e 's/ /\t/g' ${OUT_PATH}/${filename}.tmp.bed
-
-bedtools intersect  -a ${OUT_PATH}/${filename}.tmp.bed  -b ${MNP_BED}  -wa -wb > ${OUT_PATH}/${filename}.MNPFlex.bed
-
-rm -r ${OUT_PATH}/${filename}.tmp.bed
-
-#add column names
-column_names="chr start end coverage methylation_percentage IlmnID"
+# Intersect with the reference file for IlmnID using bedtools
+bedtools intersect -a "${OUT_PATH}/${FILENAME}.tmp.bed" -b "$MNP_BED" -wa -wb > "${OUT_PATH}/${FILENAME}.tmp.bed"
 
 # Add column names to the output file
-echo -e "$column_names" > ${OUT_PATH}/${filename}.MNPFlex.subset.bed
+column_names="chr start end coverage modC_percent IlmnID"
+echo -e "$column_names" > "${OUT_PATH}/${FILENAME}.MNPFlex.subset.bed"
 
-# Append the content of the input file to the output file
-awk '{print $1,$2,$3,$4,$5,$12}' ${OUT_PATH}/${filename}.MNPFlex.bed >> ${OUT_PATH}/${filename}.MNPFlex.subset.bed
+# Group by IlmnID (column $25) and summarize (sum) columns N_valid-cov ($10), N_mod ($12), and N_other-mod ($14)
+# Methylation rate = ( N_mod + N_other-mod ) / N_valid-cov
+awk -v FS="\t" -v OFS="\t" '{
+    coverage[$25] += $10; 
+    modC[$25] += $12 + $14; 
+    chr[$25] = $19; 
+    start[$25] = $20; 
+    end[$25] = $21
+} 
+END {
+    for (id in coverage) {
+        beta = modC[id] / coverage[id] * 100
+        printf "%s\t%s\t%s\t%d\t%.2f\t%s\n", chr[id], start[id], end[id], coverage[id], beta, id
+    }
+}' "${OUT_PATH}/${FILENAME}.tmp.bed" >> "${OUT_PATH}/${FILENAME}.MNPFlex.subset.bed"
+
+rm -r ${OUT_PATH}/${filename}.tmp.bed
