@@ -7,10 +7,20 @@ bam_dir="/path/to/folder/of/aligned/bams"             # Directory containing you
 ref="/path/to/GRCh38.p14.genome.fa"
 id="sample_name"
 modkit_threads=8
-mnpflex_script="/path/to/Rapid-CNS2_nf/scr/mnp-flex_preprocessing.sh"
-mnpflex_bed="/path/to/Rapid-CNS2_nf/data/MNP-flex.bed"
-mnpflex_report_script="/path/to/Rapid-CNS2_nf/scr/mnp-flex_get_report.sh"
-extract_score_script="/path/to/Rapid-CNS2_nf/scr/extract_report_score.R"
+WORKFLOW_ROOT="/path/to/workflow"
+
+# Related data and scripts
+MNPFLEX_BED="${WORKFLOW_ROOT}/data/MNP-flex.bed"
+MNPFLEX_REPORT_SCRIPT="${WORKFLOW_ROOT}/scr/mnp-flex_get_report.sh"
+EXTRACT_SCORE_SCRIPT="${WORKFLOW_ROOT}/scr/extract_report_score.R"
+
+# Optional: check if files exist (good practice)
+for file in "$MNPFLEX_BED" "$MNPFLEX_REPORT_SCRIPT" "$EXTRACT_SCORE_SCRIPT"; do
+    if [ ! -e "$file" ]; then
+        echo "Error: Missing file $file" >&2
+        exit 1
+    fi
+done
 
 # Output paths
 merged_bam="/path/to/output/results/merged/${id}.merged.bam"
@@ -49,7 +59,7 @@ mkdir -p "$mnpflex_out"
 echo "Starting MNPFlex preprocessing..."
 bash "$mnpflex_script" \
     "$mods_out/${id}.mods.bedmethyl" \
-    "$mnpflex_bed" \
+    "$MNPFLEX_BED" \
     "$mnpflex_out" \
     "${id}"
 echo "Finished MNPFlex preprocessing."
@@ -57,14 +67,14 @@ echo "Finished MNPFlex preprocessing."
 # Upload to MNPFlex platform and get report
 mkdir -p "$mnpflex_out"
 echo "Uploading bed file and generating MNPFlex report..."
-bash "$mnpflex_report_script" \
+bash "$MNPFLEX_REPORT_SCRIPT" \
     "${mnpflex_out}/${id}.MNPFlex.subset.bed" \
     "${mnpflex_out}/${id}.MNPFlex.subset.pdf"
 echo "Finished generating MNPFlex report."
 
 # Extract classification scores and MGMT status from the pdf report
 echo "Extracting scores from the MNPFlex report..."
-Rscript "$extract_score_script" "${mnpflex_out}/${id}.MNPFlex.subset.pdf"
+Rscript "$EXTRACT_SCORE_SCRIPT" "${mnpflex_out}/${id}.MNPFlex.subset.pdf"
 echo "Finished extracting scores from the report."
 
 
