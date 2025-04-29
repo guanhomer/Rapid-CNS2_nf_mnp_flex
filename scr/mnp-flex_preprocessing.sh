@@ -31,7 +31,7 @@ bedtools intersect -a stdin -b "$MNP_BED" -wa -wb > "${OUT_PATH}/${ID}.tmp.bed"
             score = modC[id] / coverage[id] * 100
             printf "%s %s %s %d %.2f %s\n", chr[id], start[id], end[id], coverage[id], score, id
         }
-    }' "${OUT_PATH}/${FILENAME}.tmp.bed"
-} > "${OUT_PATH}/${FILENAME}.MNPFlex.subset.bed"
+    }' "${OUT_PATH}/${ID}.tmp.bed"
+} > "${OUT_PATH}/${ID}.MNPFlex.subset.bed"
 
 rm ${OUT_PATH}/${ID}.tmp.bed
