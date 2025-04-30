@@ -25,7 +25,7 @@ bedtools intersect -a stdin -b "$MNP_BED" -wa -wb > "${OUT_PATH}/${ID}.tmp.bed"
         if ($25 == "MGMT") {
             mgmt_count++
             score = ($12 + $14) / $10 * 100
-            printf "%s %s %s %d %.2f %s\n", $19, $20, $21, $10, score, $25
+            printf "%s %s %s %d %.2f %s\n", $1, $2, $3, $10, score, $25
         } else {
             coverage[$25] += $10
             modC[$25] += $12 + $14
