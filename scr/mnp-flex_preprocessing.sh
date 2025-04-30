@@ -20,11 +20,16 @@ bedtools intersect -a stdin -b "$MNP_BED" -wa -wb > "${OUT_PATH}/${ID}.tmp.bed"
 {
     echo "chr start end coverage methylation_percentage IlmnID"
     awk -v FS="\t" -v OFS=" " '{
-        coverage[$25] += $10; 
-        modC[$25] += $12 + $14; 
-        chr[$25] = $19; 
-        start[$25] = $20; 
-        end[$25] = $21
+        if ($25 == "MGMT") {
+            score = ($12 + $14) / $10 * 100
+            printf "%s %s %s %d %.2f %s\n", $19, $20, $21, $10, score, $25
+        } else {
+            coverage[$25] += $10
+            modC[$25] += $12 + $14
+            chr[$25] = $19
+            start[$25] = $20
+            end[$25] = $21
+        }
     } 
     END {
         for (id in coverage) {
