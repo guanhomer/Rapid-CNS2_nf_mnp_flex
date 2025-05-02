@@ -41,7 +41,7 @@ bedtools intersect -a stdin -b "$MNP_BED" -wa -wb > "${OUT_PATH}/${ID}.tmp.bed"
         }
         if (mgmt_count < 2) {
             for (i = mgmt_count; i < 2; i++) {
-                print "chr10 129467242 129467243 1 -1234 MGMT"
+                print "chr10 129467242 129467243 1 -0.001234 MGMT"
             }
         }
     }' "${OUT_PATH}/${ID}.tmp.bed"
